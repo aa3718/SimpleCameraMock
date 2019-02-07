@@ -31,5 +31,12 @@ public class CameraTest {
     camera.powerOff();
   }
 
+  @Test
+  public void pressingTheShutterWhenThePowerIsOffDoesNothing() {
+    context.checking(new Expectations() {{
+      exactly(0).of(sensor).readData();
+    }});
+    camera.pressShutter();
+  }
 
 }

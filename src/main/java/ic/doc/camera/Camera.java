@@ -13,7 +13,9 @@ public class Camera implements WriteListener {
   }
 
   public void pressShutter() {
-    // not implemented
+    if(power == false) {
+      return;
+    }
   }
 
   public void powerOn() {
