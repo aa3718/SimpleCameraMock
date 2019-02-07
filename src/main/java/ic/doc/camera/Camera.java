@@ -3,18 +3,18 @@ package ic.doc.camera;
 public class Camera implements WriteListener {
 
   private boolean power;
-  private Sensor sensor;
-  private MemoryCard memoryCard;
+  private final Sensor sensor;
+  private final MemoryCard memoryCard;
 
-  public Camera(Sensor sensorCnstr, MemoryCard memoryCardCnstr) {
+  public Camera(Sensor sensor, MemoryCard memoryCard) {
     power = false;
-    sensor = sensorCnstr;
-    memoryCard = memoryCardCnstr;
+    this.sensor = sensor;
+    this.memoryCard = memoryCard;
   }
 
   public void pressShutter() {
-    if(power == false) {
-      return;
+    if(power) {
+      memoryCard.write(sensor.readData());
     }
   }
 
@@ -28,7 +28,7 @@ public class Camera implements WriteListener {
     sensor.powerDown();
   }
 
-  @java.lang.Override
+  @Override
   public void writeComplete() {
 
   }

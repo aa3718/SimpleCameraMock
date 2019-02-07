@@ -26,16 +26,31 @@ public class CameraTest {
   @Test
   public void switchingTheCameraOffPowersDownTheSensor() {
     context.checking(new Expectations() {{
+      ignoring(sensor).powerUp();
       exactly(1).of(sensor).powerDown();
     }});
+    camera.powerOn();
     camera.powerOff();
   }
 
   @Test
   public void pressingTheShutterWhenThePowerIsOffDoesNothing() {
     context.checking(new Expectations() {{
-      exactly(0).of(sensor).readData();
+      never(sensor).readData();
+      never(memoryCard).write(with(any(byte[].class)));
     }});
+    camera.pressShutter();
+  }
+
+  @Test
+  public void pressingShutterWhilePowerOnCopiesSensorDataToMemoryCard() {
+    byte[] PHOTO = new byte[8];
+    context.checking(new Expectations() {{
+      ignoring(sensor).powerUp();
+      exactly(1).of(sensor).readData(); will(returnValue(PHOTO));
+      exactly(1).of(memoryCard).write(PHOTO);
+    }});
+    camera.powerOn();
     camera.pressShutter();
   }
 
