@@ -19,11 +19,11 @@ public class Camera implements WriteListener {
   public void powerOn() {
     power = true;
     sensor.powerUp();
-    // not implemented
   }
 
   public void powerOff() {
-    // not implemented
+    power = false;
+    sensor.powerDown();
   }
 
   @java.lang.Override
