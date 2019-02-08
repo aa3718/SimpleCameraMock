@@ -52,14 +52,14 @@ public class CameraTest {
 
   @Test
   public void pressingShutterWhilePowerOnCopiesSensorDataToMemoryCard() {
-    byte[] PHOTO = new byte[8];
+    byte[] photo = new byte[8];
     context.checking(
         new Expectations() {
           {
             ignoring(sensor).powerUp();
             exactly(1).of(sensor).readData();
-            will(returnValue(PHOTO));
-            exactly(1).of(memoryCard).write(PHOTO);
+            will(returnValue(photo));
+            exactly(1).of(memoryCard).write(photo);
           }
         });
     camera.powerOn();
@@ -99,6 +99,4 @@ public class CameraTest {
     camera.writeComplete();
     camera.powerOff();
   }
-
-
-  }
+}
