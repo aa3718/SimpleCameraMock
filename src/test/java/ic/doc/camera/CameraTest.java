@@ -71,10 +71,10 @@ public class CameraTest {
     context.checking(
         new Expectations() {
           {
-            exactly(1).of(sensor).powerUp();
+            ignoring(sensor).powerUp();
+            ignoring(memoryCard).write(with(any(byte[].class)));
             exactly(1).of(sensor).readData();
             never(sensor).powerDown();
-            ignoring(memoryCard).write(with(any(byte[].class)));
           }
         });
     camera.powerOn();
@@ -82,4 +82,23 @@ public class CameraTest {
     camera.powerOff();
     camera.writeComplete();
   }
+
+  @Test
+  public void switchingCameraOffPowersDownSensorAfterDataIsWritten() {
+    context.checking(
+        new Expectations() {
+          {
+            ignoring(sensor).powerUp();
+            ignoring(memoryCard).write(with(any(byte[].class)));
+            exactly(1).of(sensor).readData();
+            exactly(1).of(sensor).powerDown();
+          }
+        });
+    camera.powerOn();
+    camera.pressShutter();
+    camera.writeComplete();
+    camera.powerOff();
+  }
+
+
   }
